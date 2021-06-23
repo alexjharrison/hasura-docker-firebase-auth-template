@@ -41,5 +41,16 @@ services:
       - .env
     environment:
       VUE_APP_TEST: test
+  ngrok:
+    image: shkoliar/ngrok:latest
+    command: sh -c "ngrok authtoken ${NGROK_AUTHTOKEN} && ./start.sh"
+    ports:
+      - 4551:4551
+    environment:
+      - DOMAIN=app
+      - PORT=3000
+      - BIND_TLS=true
+    depends_on:
+      - "app"
 volumes:
   db_data:
