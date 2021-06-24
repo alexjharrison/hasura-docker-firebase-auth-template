@@ -1,4 +1,6 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
+import urql from "@urql/vue";
+import { urqlConfig } from "./urql";
 
-createApp(App).mount('#app')
+createApp(App).use(urql, urqlConfig).mount("#app");

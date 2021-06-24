@@ -6,5 +6,15 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     host: "0.0.0.0",
+    port: 3000,
+    proxy: {
+      "/api": {
+        target: "http://hasura:8080/",
+        changeOrigin: true,
+        secure: false,
+        ws: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
 });

@@ -41,6 +41,8 @@ services:
       - .env
     environment:
       VUE_APP_TEST: test
+    depends_on:
+      - "hasura"
   ngrok:
     image: shkoliar/ngrok:latest
     command: sh -c "ngrok authtoken ${NGROK_AUTHTOKEN} && ./start.sh"
