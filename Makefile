@@ -11,3 +11,8 @@ migration:
 export:
 	@$(HCLI) metadata export
 	sudo chown -R `id -u`:`id -g` ./hasura
+
+reboot:
+	@$(DC) down
+	@$(DC) build 
+	@$(DC) up -d

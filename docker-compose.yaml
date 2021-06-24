@@ -9,8 +9,6 @@ services:
       POSTGRES_PASSWORD: postgrespassword
   hasura:
     image: hasura/graphql-engine:v2.0.1.cli-migrations-v3
-    ports:
-      - "8080:8080"
     depends_on:
       - "postgres"
     working_dir: /hasura
@@ -36,7 +34,7 @@ services:
     volumes:
       - ./app:/usr/src/app
     ports:
-      - "3000:3000"
+      - "${VUE_APP_PORT}:3000"
     env_file:
       - .env
     environment:
@@ -47,7 +45,7 @@ services:
     image: shkoliar/ngrok:latest
     command: sh -c "ngrok authtoken ${NGROK_AUTHTOKEN} && ./start.sh"
     ports:
-      - 4551:4551
+      - ${NGROK_PORT}:4551
     environment:
       - DOMAIN=app
       - PORT=3000

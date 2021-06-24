@@ -1,9 +1,9 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <p>Hasura Console: <a href="/api/console" target="_blank">Here</a></p>
+  <p>Ngrok Console: <a href="http://localhost:4552" target="_blank">Here</a></p>
   <p>allusers: {{ allUsers }}</p>
-  <p>error: {{ error }}</p>
-  <p>fetching: {{ fetching }}</p>
 </template>
 
 <script lang="ts">
