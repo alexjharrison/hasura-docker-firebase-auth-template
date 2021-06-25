@@ -1,4 +1,4 @@
-import { gql } from "@urql/vue";
+import { gql } from '@urql/vue'
 
 export const GET_ALL_USERS = gql`
   query GET_ALL_USERS {
@@ -12,4 +12,4 @@ export const GET_ALL_USERS = gql`
       username
     }
   }
-`;
+`
