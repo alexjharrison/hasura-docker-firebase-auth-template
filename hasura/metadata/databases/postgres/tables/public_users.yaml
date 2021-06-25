@@ -3,13 +3,7 @@ table:
   schema: public
 select_permissions:
 - permission:
-    columns:
-    - display_name
-    - email
-    - id
-    - username
-    - created_at
-    - updated_at
+    columns: []
     filter: {}
   role: public
 - permission:
@@ -20,5 +14,7 @@ select_permissions:
     - username
     - created_at
     - updated_at
-    filter: {}
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
   role: user

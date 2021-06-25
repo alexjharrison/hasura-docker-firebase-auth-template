@@ -17,7 +17,7 @@ const subscriptionClient = new SubscriptionClient('ws://api/v1/graphql', {
   lazy: true,
   connectionParams: {
     headers: {
-      Authorization: `Bearer ${auth.token}`,
+      Authorization: `Bearer ${auth.value.token}`,
     },
   },
 })
@@ -25,16 +25,20 @@ const subscriptionClient = new SubscriptionClient('ws://api/v1/graphql', {
 export const urqlConfig: ClientOptions = {
   url: 'api/v1/graphql',
   requestPolicy: 'cache-and-network',
-  fetchOptions: {
-    headers: {
-      Authorization: `Bearer ${auth.token}`,
-      'content-type': 'application/json',
-    },
+  fetchOptions: () => {
+    return {
+      headers: {
+        ...(auth.value.token && {
+          Authorization: `Bearer ${auth.value.token}`,
+        }),
+        'content-type': 'application/json',
+      },
+    }
   },
   exchanges: [
     errorExchange({
       onError: (error, operation) => {
-        console.error('Error Logged', error, operation)
+        console.log('[GQL ERROR]', error, operation)
       },
     }),
     debugExchange,

@@ -1,10 +1,10 @@
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/analytics'
 import 'firebase/database'
 
-const app = firebase.initializeApp({
+firebase.initializeApp({
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
@@ -73,5 +73,5 @@ export function useAuth() {
     }
   }
 
-  return { signIn, signOut, auth }
+  return { signIn, signOut, auth: computed(() => auth) }
 }
