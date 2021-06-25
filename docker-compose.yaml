@@ -26,13 +26,7 @@ services:
       HASURA_GRAPHQL_METADATA_DIR: /hasura/metadata
       HASURA_GRAPHQL_SEEDS_DIR: /hasura/seeds
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: public
-      # HASURA_GRAPHQL_JWT_SECRET: >
-      #   {
-      #     "type": "RS256",
-      #     "jwk_url": "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com",
-      #     "audience": "${FIREBASE_PROJECT_ID}",
-      #     "issuer": "https://securetoken.google.com/${FIREBASE_PROJECT_ID}",
-      #   }
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS256","jwk_url": "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com", "audience": "${FIREBASE_PROJECT_ID}", "issuer": "https://securetoken.google.com/${FIREBASE_PROJECT_ID}"}'
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
   app:
     build:
