@@ -8,7 +8,6 @@ export const GET_ALL_USERS = gql`
       email
       id
       updated_at
-      user_role_id
       username
     }
   }
