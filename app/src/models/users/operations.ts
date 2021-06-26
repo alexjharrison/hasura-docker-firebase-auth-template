@@ -12,14 +12,14 @@ export const GET_ALL_USERS = gql`
 
 // TODO FIX UPSERT
 
-export const USER_UPSERT = gql`
-  ${USER_FIELDS}
-  mutation USER_UPSERT() {
-    insert_users_one(
-      object: { display_name: "", email: "", id: "", username: "" }
-      on_conflict: { constraint: users_pkey }
-    ) {
-      ...USER_FIELDS
-    }
-  }
-`
+// export const USER_UPSERT = gql`
+//   ${USER_FIELDS}
+//   mutation USER_UPSERT() {
+//     insert_users_one(
+//       object: { display_name: "", email: "", id: "", username: "" }
+//       on_conflict: { constraint: users_pkey }
+//     ) {
+//       ...USER_FIELDS
+//     }
+//   }
+// `
