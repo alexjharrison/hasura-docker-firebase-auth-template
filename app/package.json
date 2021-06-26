@@ -4,7 +4,8 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "lint": "eslint --ext .ts,vue --ignore-path .gitignore ."
+    "lint": "eslint --ext .ts,vue --ignore-path .gitignore .",
+    "introspect": "node src/plugins/gqlSchema"
   },
   "dependencies": {
     "@urql/vue": "^0.4.1",
@@ -15,7 +16,12 @@
     "vue-router": "^4.0.10"
   },
   "devDependencies": {
+    "@graphql-codegen/core": "^1.17.10",
+    "@graphql-codegen/typescript": "^1.22.3",
+    "@graphql-tools/json-file-loader": "^6.2.6",
+    "@graphql-tools/load": "^6.2.8",
     "@types/node": "^15.12.4",
+    "@types/node-fetch": "^2.5.10",
     "@vitejs/plugin-vue": "^1.2.3",
     "@vue/compiler-sfc": "^3.0.5",
     "@vue/eslint-config-prettier": "^6.0.0",
@@ -24,6 +30,7 @@
     "eslint-plugin-vue": "^7.12.1",
     "husky": "^6.0.0",
     "lint-staged": "^11.0.0",
+    "node-fetch": "^2.6.1",
     "prettier": "^2.3.1",
     "typescript": "^4.3.2",
     "vite": "^2.3.8",
@@ -36,5 +43,6 @@
   },
   "lint-staged": {
     "*.{ts,vue}": "eslint --fix"
-  }
+  },
+  "type": "module"
 }

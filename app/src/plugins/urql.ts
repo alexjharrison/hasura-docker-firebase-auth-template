@@ -2,6 +2,7 @@ import { SubscriptionClient } from 'subscriptions-transport-ws'
 import {
   cacheExchange,
   ClientOptions,
+  createClient,
   debugExchange,
   dedupExchange,
   errorExchange,
@@ -50,3 +51,5 @@ export const urqlConfig: ClientOptions = {
     }),
   ],
 }
+
+export const client = createClient(urqlConfig)
