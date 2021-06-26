@@ -197,7 +197,6 @@ export type Users = {
   email: Scalars['String']
   id: Scalars['String']
   updated_at: Scalars['timestamptz']
-  username: Scalars['String']
 }
 
 /** aggregated selection of "users" */
@@ -231,7 +230,6 @@ export type Users_Bool_Exp = {
   email?: Maybe<String_Comparison_Exp>
   id?: Maybe<String_Comparison_Exp>
   updated_at?: Maybe<Timestamptz_Comparison_Exp>
-  username?: Maybe<String_Comparison_Exp>
 }
 
 /** unique or primary key constraints on table "users" */
@@ -240,8 +238,6 @@ export enum Users_Constraint {
   UsersEmailKey = 'users_email_key',
   /** unique or primary key constraint */
   UsersPkey = 'users_pkey',
-  /** unique or primary key constraint */
-  UsersUsernameKey = 'users_username_key',
 }
 
 /** input type for inserting data into table "users" */
@@ -251,7 +247,6 @@ export type Users_Insert_Input = {
   email?: Maybe<Scalars['String']>
   id?: Maybe<Scalars['String']>
   updated_at?: Maybe<Scalars['timestamptz']>
-  username?: Maybe<Scalars['String']>
 }
 
 /** aggregate max on columns */
@@ -262,7 +257,6 @@ export type Users_Max_Fields = {
   email?: Maybe<Scalars['String']>
   id?: Maybe<Scalars['String']>
   updated_at?: Maybe<Scalars['timestamptz']>
-  username?: Maybe<Scalars['String']>
 }
 
 /** aggregate min on columns */
@@ -273,7 +267,6 @@ export type Users_Min_Fields = {
   email?: Maybe<Scalars['String']>
   id?: Maybe<Scalars['String']>
   updated_at?: Maybe<Scalars['timestamptz']>
-  username?: Maybe<Scalars['String']>
 }
 
 /** response of any mutation on the table "users" */
@@ -299,7 +292,6 @@ export type Users_Order_By = {
   email?: Maybe<Order_By>
   id?: Maybe<Order_By>
   updated_at?: Maybe<Order_By>
-  username?: Maybe<Order_By>
 }
 
 /** primary key columns input for table: users */
@@ -319,8 +311,6 @@ export enum Users_Select_Column {
   Id = 'id',
   /** column name */
   UpdatedAt = 'updated_at',
-  /** column name */
-  Username = 'username',
 }
 
 /** input type for updating data in table "users" */
@@ -330,7 +320,6 @@ export type Users_Set_Input = {
   email?: Maybe<Scalars['String']>
   id?: Maybe<Scalars['String']>
   updated_at?: Maybe<Scalars['timestamptz']>
-  username?: Maybe<Scalars['String']>
 }
 
 /** update columns of table "users" */
@@ -345,6 +334,4 @@ export enum Users_Update_Column {
   Id = 'id',
   /** column name */
   UpdatedAt = 'updated_at',
-  /** column name */
-  Username = 'username',
 }

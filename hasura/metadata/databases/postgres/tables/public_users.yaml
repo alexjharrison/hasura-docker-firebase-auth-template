@@ -1,6 +1,17 @@
 table:
   name: users
   schema: public
+insert_permissions:
+- permission:
+    backend_only: false
+    check: {}
+    columns:
+    - id
+    - created_at
+    - updated_at
+    - email
+    - display_name
+  role: user
 select_permissions:
 - permission:
     columns: []
@@ -11,10 +22,18 @@ select_permissions:
     - display_name
     - email
     - id
-    - username
     - created_at
     - updated_at
-    filter:
-      id:
-        _eq: X-Hasura-User-Id
+    filter: {}
+  role: user
+update_permissions:
+- permission:
+    check: {}
+    columns:
+    - display_name
+    - email
+    - id
+    - created_at
+    - updated_at
+    filter: {}
   role: user

@@ -10,13 +10,14 @@
 <script lang="ts">
   import { useQuery } from '@urql/vue'
   import { defineComponent, ref } from 'vue'
-  import { useAuth } from './hooks/auth'
+  import { useAuth, useUserUpsert } from './hooks/auth'
   import { GET_ALL_USERS } from './models/users/operations'
 
   export default defineComponent({
     name: 'App',
     setup() {
       const { signIn, signOut, auth } = useAuth()
+      useUserUpsert()
 
       const trigger = ref(false)
 

@@ -1,12 +1,16 @@
-import { computed, reactive } from 'vue'
+import { computed, reactive, watch, watchEffect } from 'vue'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/analytics'
 import 'firebase/database'
+import { useMutation } from '@urql/vue'
+import { USER_UPSERT } from '../models/users/operations'
+import { Users, Users_Insert_Input } from '../../types'
 
 firebase.initializeApp({
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
@@ -74,4 +78,23 @@ export function useAuth() {
   }
 
   return { signIn, signOut, auth: computed(() => auth) }
+}
+
+export function useUserUpsert() {
+  const { executeMutation } = useMutation<
+    Users,
+    { object: Users_Insert_Input }
+  >(USER_UPSERT)
+
+  watchEffect(() => {
+    if (auth.user) {
+      executeMutation({
+        object: {
+          display_name: auth.user.displayName,
+          email: auth.user.email,
+          id: auth.user.uid,
+        },
+      })
+    }
+  })
 }
