@@ -6,11 +6,9 @@ insert_permissions:
     backend_only: false
     check: {}
     columns:
-    - id
-    - created_at
-    - updated_at
-    - email
     - display_name
+    - email
+    - id
   role: user
 select_permissions:
 - permission:
@@ -24,16 +22,19 @@ select_permissions:
     - id
     - created_at
     - updated_at
-    filter: {}
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
   role: user
 update_permissions:
 - permission:
-    check: {}
+    check:
+      id:
+        _eq: X-Hasura-User-Id
     columns:
     - display_name
     - email
-    - id
-    - created_at
-    - updated_at
-    filter: {}
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
   role: user

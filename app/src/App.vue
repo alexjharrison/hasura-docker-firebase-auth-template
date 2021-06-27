@@ -9,7 +9,7 @@
 
 <script lang="ts">
   import { useQuery } from '@urql/vue'
-  import { defineComponent, ref } from 'vue'
+  import { computed, defineComponent, ref } from 'vue'
   import { useAuth, useUserUpsert } from './hooks/auth'
   import { GET_ALL_USERS } from './models/users/operations'
 
@@ -25,7 +25,10 @@
         data: allUsers,
         error,
         fetching,
-      } = useQuery({ query: GET_ALL_USERS })
+      } = useQuery({
+        query: GET_ALL_USERS,
+        pause: computed(() => auth.value.isUpserted === false),
+      })
       return { allUsers, error, fetching, signIn, signOut, auth, trigger }
     },
   })

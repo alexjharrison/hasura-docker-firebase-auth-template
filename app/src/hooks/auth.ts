@@ -1,4 +1,4 @@
-import { computed, reactive, watch, watchEffect } from 'vue'
+import { computed, reactive, ref, watchEffect } from 'vue'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/analytics'
@@ -30,7 +30,7 @@ firebase.auth().onAuthStateChanged(async user => {
 
     const hasuraClaim = idTokenResult.claims['https://hasura.io/jwt/claims']
     if (hasuraClaim) {
-      setAuth({ user, token, status: 'in' })
+      setAuth({ user, token, status: 'in', isUpserted: false })
     } else {
       const metadataRef = firebase
         .database()
@@ -40,22 +40,24 @@ firebase.auth().onAuthStateChanged(async user => {
         if (!data.exists) return
         // Force refresh to pick up the latest custom claims changes.
         const token = await user.getIdToken(true)
-        setAuth({ status: 'in', user, token })
+        setAuth({ status: 'in', user, token, isUpserted: false })
       })
     }
-  } else setAuth({ status: 'out', user: null, token: '' })
+  } else setAuth({ status: 'out', user: null, token: '', isUpserted: false })
 })
 
 const auth = reactive({
   status: 'out' as 'out' | 'in' | 'loading',
   user: null as firebase.User | null,
   token: '',
+  isUpserted: false,
 })
 
-function setAuth({ token, user, status }: typeof auth): void {
+function setAuth({ token, user, status, isUpserted }: typeof auth): void {
   auth.token = token
   auth.user = user
   auth.status = status
+  auth.isUpserted = isUpserted
 }
 
 export function useAuth() {
@@ -86,15 +88,16 @@ export function useUserUpsert() {
     { object: Users_Insert_Input }
   >(USER_UPSERT)
 
-  watchEffect(() => {
+  watchEffect(async () => {
     if (auth.user) {
-      executeMutation({
+      await executeMutation({
         object: {
           display_name: auth.user.displayName,
           email: auth.user.email,
           id: auth.user.uid,
         },
       })
+      auth.isUpserted = true
     }
   })
 }
