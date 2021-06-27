@@ -6,7 +6,7 @@ import { getIntrospectionQuery } from 'graphql'
 import { loadSchema } from '@graphql-tools/load'
 import { JsonFileLoader } from '@graphql-tools/json-file-loader'
 
-fetch('http://localhost:3000/api/v1/graphql', {
+fetch('http://hasura:8080/v1/graphql', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',

@@ -1,8 +1,6 @@
 DC=docker-compose
 HCLI=$(DC) exec hasura hasura-cli
 
-rebuild:
-	@$(DC) build --no-cache
 
 migration: 
 	@$(HCLI) migrate create init --from-server
@@ -12,6 +10,11 @@ export:
 	@$(HCLI) metadata export
 	@$(DC) exec app npm run introspect
 	sudo chown -R `id -u`:`id -g` ./hasura ./app
+
+rebuild:
+	@$(DC) down
+	@$(DC) build --no-cache
+	@$(DC) up -d
 
 reboot:
 	@$(DC) down
