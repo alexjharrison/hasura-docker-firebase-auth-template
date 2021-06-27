@@ -5,7 +5,7 @@ import 'firebase/analytics'
 import 'firebase/database'
 import { useMutation } from '@urql/vue'
 import { USER_UPSERT } from '../models/users/operations'
-import { Users, Users_Insert_Input } from '../../types'
+import { Users, Users_Insert_Input } from '@/types'
 
 firebase.initializeApp({
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,

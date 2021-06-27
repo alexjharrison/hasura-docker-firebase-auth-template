@@ -21,19 +21,19 @@ fetch('http://localhost:3000/api/v1/graphql', {
   .then(({ data }) => {
     console.log('Schema fetched')
 
-    fs.writeFile('schema.json', JSON.stringify(data), 'utf-8')
+    fs.writeFile('src/assets/schema/schema.json', JSON.stringify(data), 'utf-8')
       .then(() => console.log('schema.json written'))
       .then(createTypes)
       .catch(err => console.error('schema.json failed to write', err))
   })
 
 async function createTypes() {
-  const schema = await loadSchema('schema.json', {
+  const schema = await loadSchema('src/assets/schema/schema.json', {
     loaders: [new JsonFileLoader()],
   })
 
   const config = {
-    filename: 'types.ts',
+    filename: 'src/types.ts',
     schema: schema,
     plugins: [{ typescript: {} }],
     pluginMap: { typescript: typescriptPlugin },
@@ -41,7 +41,7 @@ async function createTypes() {
 
   const output = await codegen(config)
 
-  fs.writeFile('types.ts', output, 'utf-8').then(() =>
+  fs.writeFile('src/types.ts', output, 'utf-8').then(() =>
     console.log('types.ts written')
   )
 }
