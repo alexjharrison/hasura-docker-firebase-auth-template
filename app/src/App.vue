@@ -2,16 +2,14 @@
   <img alt="Vue logo" src="./assets/logo.png" />
   <p>Hasura Console: <a href="/api/console" target="_blank">Here</a></p>
   <p>Ngrok Console: <a href="http://localhost:4552" target="_blank">Here</a></p>
-  <p>allusers: {{ allUsers }}</p>
+  <p>Me: {{ user }}</p>
   <Button v-if="auth.user" label="Sign Out" @click="signOut" />
   <Button v-else @click="signIn">Sign In</Button>
 </template>
 
 <script lang="ts">
-  import { useQuery } from '@urql/vue'
-  import { computed, defineComponent, ref } from 'vue'
-  import { useAuth, useUserUpsert } from './hooks/auth'
-  import { GET_ALL_USERS } from './models/users/operations'
+  import { defineComponent } from 'vue'
+  import { user, useAuth, useUserUpsert } from './hooks/auth'
 
   export default defineComponent({
     name: 'App',
@@ -19,17 +17,7 @@
       const { signIn, signOut, auth } = useAuth()
       useUserUpsert()
 
-      const trigger = ref(false)
-
-      const {
-        data: allUsers,
-        error,
-        fetching,
-      } = useQuery({
-        query: GET_ALL_USERS,
-        pause: computed(() => auth.value.isUpserted === false),
-      })
-      return { allUsers, error, fetching, signIn, signOut, auth, trigger }
+      return { signIn, signOut, auth, user }
     },
   })
 </script>

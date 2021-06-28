@@ -1,4 +1,4 @@
-import { computed, reactive, ref, watchEffect } from 'vue'
+import { computed, nextTick, reactive, ref, watchEffect } from 'vue'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/analytics'
@@ -30,7 +30,7 @@ firebase.auth().onAuthStateChanged(async user => {
 
     const hasuraClaim = idTokenResult.claims['https://hasura.io/jwt/claims']
     if (hasuraClaim) {
-      setAuth({ user, token, status: 'in', isUpserted: false })
+      setAuth({ user, token, status: 'in', isFetching: false })
     } else {
       const metadataRef = firebase
         .database()
@@ -40,27 +40,29 @@ firebase.auth().onAuthStateChanged(async user => {
         if (!data.exists) return
         // Force refresh to pick up the latest custom claims changes.
         const token = await user.getIdToken(true)
-        setAuth({ status: 'in', user, token, isUpserted: false })
+        setAuth({ status: 'in', user, token, isFetching: false })
       })
     }
-  } else setAuth({ status: 'out', user: null, token: '', isUpserted: false })
+  } else setAuth({ status: 'out', user: null, token: '', isFetching: false })
 })
 
 const auth = reactive({
   status: 'out' as 'out' | 'in' | 'loading',
   user: null as firebase.User | null,
   token: '',
-  isUpserted: false,
+  isFetching: true,
 })
 
-function setAuth({ token, user, status, isUpserted }: typeof auth): void {
+const user = ref<Users>()
+
+function setAuth({ token, user, status, isFetching }: typeof auth): void {
   auth.token = token
   auth.user = user
   auth.status = status
-  auth.isUpserted = isUpserted
+  auth.isFetching = isFetching
 }
 
-export function useAuth() {
+function useAuth() {
   const signIn = async () => {
     try {
       await firebase.auth().signInWithPopup(googleAuthProvider)
@@ -73,7 +75,8 @@ export function useAuth() {
     try {
       auth.status = 'loading'
       await firebase.auth().signOut()
-      auth.status = 'out'
+      setAuth({ isFetching: false, status: 'out', user: null, token: '' })
+      user.value = undefined
     } catch (err) {
       console.error(err)
     }
@@ -82,22 +85,25 @@ export function useAuth() {
   return { signIn, signOut, auth: computed(() => auth) }
 }
 
-export function useUserUpsert() {
+function useUserUpsert() {
   const { executeMutation } = useMutation<
-    Users,
+    { insert_users_one: Users },
     { object: Users_Insert_Input }
   >(USER_UPSERT)
 
   watchEffect(async () => {
-    if (auth.user) {
-      await executeMutation({
+    if (auth.user && auth.token) {
+      const { data } = await executeMutation({
         object: {
           display_name: auth.user.displayName,
           email: auth.user.email,
           id: auth.user.uid,
         },
       })
-      auth.isUpserted = true
+      user.value = data?.insert_users_one
+      auth.isFetching = false
     }
   })
 }
+
+export { useUserUpsert, useAuth, user }

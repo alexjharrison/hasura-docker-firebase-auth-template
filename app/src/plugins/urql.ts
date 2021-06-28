@@ -1,6 +1,5 @@
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import {
-  cacheExchange,
   ClientOptions,
   createClient,
   debugExchange,
@@ -10,15 +9,23 @@ import {
   subscriptionExchange,
 } from '@urql/vue'
 import { useAuth } from '../hooks/auth'
+import schema from '../assets/schema/schema.json'
+import { cacheExchange } from '@urql/exchange-graphcache'
+import { IntrospectionData } from '@urql/exchange-graphcache/dist/types/ast'
+import { devtoolsExchange } from '@urql/devtools'
 
 const { auth } = useAuth()
+
+const cache = cacheExchange({ schema: schema as IntrospectionData })
 
 const subscriptionClient = new SubscriptionClient('ws://api/v1/graphql', {
   reconnect: true,
   lazy: true,
   connectionParams: {
     headers: {
-      Authorization: `Bearer ${auth.value.token}`,
+      ...(auth.value.token && {
+        Authorization: `Bearer ${auth.value.token}`,
+      }),
     },
   },
 })
@@ -37,6 +44,7 @@ export const urqlConfig: ClientOptions = {
     }
   },
   exchanges: [
+    devtoolsExchange,
     errorExchange({
       onError: (error, operation) => {
         console.log('[GQL ERROR]', error, operation)
@@ -44,7 +52,7 @@ export const urqlConfig: ClientOptions = {
     }),
     debugExchange,
     dedupExchange,
-    cacheExchange,
+    cache,
     fetchExchange,
     subscriptionExchange({
       forwardSubscription: operation => subscriptionClient.request(operation),
