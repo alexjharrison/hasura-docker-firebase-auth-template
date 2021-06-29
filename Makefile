@@ -20,3 +20,14 @@ reboot:
 	@$(DC) down
 	@$(DC) build 
 	@$(DC) up -d
+
+rebuild-prod:
+	@$(DC) -f docker-compose.prod.yml down
+	@$(DC) -f docker-compose.prod.yml build --no-cache
+	@$(DC) -f docker-compose.prod.yml up -d
+
+reboot-prod:
+	@$(DC) -f docker-compose.prod.yml down
+	@$(DC) -f docker-compose.prod.yml build 
+	@$(DC) -f docker-compose.prod.yml up -d
+

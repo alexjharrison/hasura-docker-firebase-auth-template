@@ -1,0 +1,11 @@
+:80
+
+root * /vue
+route {
+    handle_path /api* {
+        rewrite * /{path}
+        reverse_proxy hasura:8080 
+    }
+    try_files {path} {path}/ /index.html?{query}
+    file_server
+}
