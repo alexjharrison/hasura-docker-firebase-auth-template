@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!auth.isFetching">
+  <div>
     <img alt="Vue logo" src="./assets/logo.png" />
     <p>Hasura Console: <a href="/api/console" target="_blank">Here</a></p>
     <p>
