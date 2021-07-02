@@ -6,6 +6,7 @@ import 'firebase/database'
 import { useMutation } from '@urql/vue'
 import { USER_UPSERT } from '../models/users/operations'
 import { Users, Users_Insert_Input } from '@/types'
+import router from '@/plugins/router'
 
 firebase.initializeApp({
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -102,7 +103,8 @@ function useUserUpsert() {
       })
       user.value = data?.insert_users_one
       auth.isFetching = false
-    }
+    } else if (!auth.isFetching && router.currentRoute.value.name !== 'Home')
+      router.push('/')
   })
 }
 
