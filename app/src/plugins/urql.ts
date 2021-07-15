@@ -7,16 +7,12 @@ import {
   errorExchange,
   fetchExchange,
   subscriptionExchange,
+  cacheExchange,
 } from '@urql/vue'
 import { useAuth } from '../hooks/auth'
-import schema from '../assets/schema/schema.json'
-import { cacheExchange } from '@urql/exchange-graphcache'
-import { IntrospectionData } from '@urql/exchange-graphcache/dist/types/ast'
 import { devtoolsExchange } from '@urql/devtools'
 
 const { auth } = useAuth()
-
-const cache = cacheExchange({ schema: schema as IntrospectionData })
 
 const subscriptionClient = new SubscriptionClient('ws://api/v1/graphql', {
   reconnect: true,
@@ -52,7 +48,7 @@ export const urqlConfig: ClientOptions = {
     }),
     debugExchange,
     dedupExchange,
-    cache,
+    cacheExchange,
     fetchExchange,
     subscriptionExchange({
       forwardSubscription: operation => subscriptionClient.request(operation),
