@@ -1,0 +1,16 @@
+schema:
+  - http://localhost:${VUE_APP_PORT}/api/v1/graphql:
+      headers:
+        Content-Type: application/json
+        x-hasura-admin-secret: ${HASURA_SECRET}
+
+documents: src/**/*.graphql
+generates:
+  src/api.ts:
+    config:
+      gqlImport: '@urql/vue#gql'
+      transformUnderscore: true
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-vue-urql

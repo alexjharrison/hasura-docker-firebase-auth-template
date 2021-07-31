@@ -9,7 +9,7 @@ migration:
 export:
 	@$(HCLI) metadata export
 	@$(DC) exec app npm run introspect
-	sudo chown -R `id -u`:`id -g` ./hasura ./app
+	# sudo chown -R `id -u`:`id -g` ./hasura ./app
 
 rebuild:
 	@$(DC) down

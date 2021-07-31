@@ -4,6 +4,7 @@ import urql from '@urql/vue'
 import { urqlConfig } from './plugins/urql'
 import PrimeVueInit from './plugins/primevue'
 import './assets/styles/styles.scss'
+import 'primeflex/primeflex.css'
 
 const app = createApp(App)
 

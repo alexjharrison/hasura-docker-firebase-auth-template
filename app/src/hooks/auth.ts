@@ -1,12 +1,11 @@
-import { computed, nextTick, reactive, ref, watchEffect } from 'vue'
+import { computed, reactive, ref, watchEffect } from 'vue'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/analytics'
 import 'firebase/database'
-import { useMutation } from '@urql/vue'
-import { USER_UPSERT } from '../models/users/operations'
-import { Users, Users_Insert_Input } from '@/types'
 import router from '@/plugins/router'
+import { UserFieldsFragment, useUserUpsertMutation } from '@/api'
+import { Maybe } from 'graphql/jsutils/Maybe'
 
 firebase.initializeApp({
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -54,7 +53,7 @@ const auth = reactive({
   isFetching: true,
 })
 
-const user = ref<Users>()
+const user = ref<Maybe<{ __typename?: 'users' } & UserFieldsFragment>>()
 
 function setAuth({ token, user, status, isFetching }: typeof auth): void {
   auth.token = token
@@ -87,10 +86,7 @@ function useAuth() {
 }
 
 function useUserUpsert() {
-  const { executeMutation } = useMutation<
-    { insert_users_one: Users },
-    { object: Users_Insert_Input }
-  >(USER_UPSERT)
+  const { executeMutation } = useUserUpsertMutation()
 
   watchEffect(async () => {
     if (auth.user && auth.token) {
