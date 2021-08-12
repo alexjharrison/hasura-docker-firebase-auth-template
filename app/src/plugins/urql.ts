@@ -1,4 +1,7 @@
-import { SubscriptionClient } from 'subscriptions-transport-ws'
+import { authExchange } from '@urql/exchange-auth'
+import { devtoolsExchange } from '@urql/devtools'
+import { subscriptionClient } from './exchanges/subscription'
+import { authExchangeOptions } from './exchanges/auth'
 import {
   ClientOptions,
   createClient,
@@ -9,36 +12,10 @@ import {
   subscriptionExchange,
   cacheExchange,
 } from '@urql/vue'
-import { useAuth } from '../hooks/auth'
-import { devtoolsExchange } from '@urql/devtools'
-
-const { auth } = useAuth()
-
-const subscriptionClient = new SubscriptionClient('ws://api/v1/graphql', {
-  reconnect: true,
-  lazy: true,
-  connectionParams: {
-    headers: {
-      ...(auth.value.token && {
-        Authorization: `Bearer ${auth.value.token}`,
-      }),
-    },
-  },
-})
 
 export const urqlConfig: ClientOptions = {
   url: 'api/v1/graphql',
   requestPolicy: 'cache-and-network',
-  fetchOptions: () => {
-    return {
-      headers: {
-        ...(auth.value.token && {
-          Authorization: `Bearer ${auth.value.token}`,
-        }),
-        'content-type': 'application/json',
-      },
-    }
-  },
   exchanges: [
     devtoolsExchange,
     errorExchange({
@@ -49,9 +26,10 @@ export const urqlConfig: ClientOptions = {
     debugExchange,
     dedupExchange,
     cacheExchange,
+    authExchange(authExchangeOptions),
     fetchExchange,
     subscriptionExchange({
-      forwardSubscription: operation => subscriptionClient.request(operation),
+      forwardSubscription: op => subscriptionClient.request(op),
     }),
   ],
 }

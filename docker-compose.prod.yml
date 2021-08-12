@@ -1,6 +1,7 @@
 version: "3.6"
 services:
   caddy:
+    container_name: prod_caddy
     image: caddy:2.4.3-alpine
     restart: always
     volumes:
@@ -20,6 +21,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgrespassword
   hasura:
+    container_name: prod_hasura
     image: hasura/graphql-engine:v2.0.1.cli-migrations-v3
     depends_on:
       - "postgres"
@@ -41,10 +43,10 @@ services:
       HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS256","jwk_url": "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com", "audience": "${FIREBASE_PROJECT_ID}", "issuer": "https://securetoken.google.com/${FIREBASE_PROJECT_ID}"}'
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_SECRET}
   app:
+    container_name: prod_app
     build:
       context: ./app
       dockerfile: Dockerfile-prod
-    container_name: app
     volumes:
       - vue_dist:/usr/src/app/dist
       - /usr/src/app/node_modules

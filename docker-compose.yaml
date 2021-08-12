@@ -35,7 +35,6 @@ services:
     build:
       context: ./app
       dockerfile: Dockerfile
-    container_name: app
     volumes:
       - ./app:/usr/src/app
       - /usr/src/app/node_modules

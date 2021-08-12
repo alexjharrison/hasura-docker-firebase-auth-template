@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@urql/devtools": "^2.0.3",
+    "@urql/exchange-auth": "^0.1.4",
     "@urql/vue": "^0.4.3",
     "@vueuse/core": "^5.0.3",
     "firebase": "^8.6.8",
