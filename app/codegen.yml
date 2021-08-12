@@ -6,6 +6,9 @@ schema:
 
 documents: src/**/*.graphql
 generates:
+  # src/assets/schema/schema.json:
+  #   plugins:
+  #     - urql-introspection
   src/api.ts:
     config:
       gqlImport: '@urql/vue#gql'

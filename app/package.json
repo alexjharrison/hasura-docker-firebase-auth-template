@@ -21,10 +21,10 @@
     "vue-router": "^4.0.10"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.21.8",
-    "@graphql-codegen/typescript": "^1.22.3",
-    "@graphql-codegen/typescript-operations": "^1.18.4",
-    "@graphql-codegen/typescript-vue-urql": "^1.0.3",
+    "@graphql-codegen/cli": "^2.0.1",
+    "@graphql-codegen/typescript": "^2.0.0",
+    "@graphql-codegen/typescript-operations": "^2.0.1",
+    "@graphql-codegen/typescript-vue-urql": "^2.0.0",
     "@types/node": "^15.12.4",
     "@types/node-fetch": "^2.5.10",
     "@vitejs/plugin-vue": "^1.2.3",
