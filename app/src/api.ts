@@ -350,28 +350,20 @@ export enum Users_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
-export type UserFieldsFragment = (
-  { __typename?: 'users' }
-  & Pick<Users, 'id' | 'email' | 'created_at' | 'updated_at'>
-);
+export type UserFieldsFragment = { __typename?: 'users', id: string, email: string, display_name: string, created_at: any, updated_at: any };
 
 export type UserUpsertMutationVariables = Exact<{
   object: Users_Insert_Input;
 }>;
 
 
-export type UserUpsertMutation = (
-  { __typename?: 'mutation_root' }
-  & { insert_users_one?: Maybe<(
-    { __typename?: 'users' }
-    & UserFieldsFragment
-  )> }
-);
+export type UserUpsertMutation = { __typename?: 'mutation_root', insert_users_one?: Maybe<{ __typename?: 'users', id: string, email: string, display_name: string, created_at: any, updated_at: any }> };
 
 export const UserFieldsFragmentDoc = gql`
     fragment UserFields on users {
   id
   email
+  display_name
   created_at
   updated_at
 }

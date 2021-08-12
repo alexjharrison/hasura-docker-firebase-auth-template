@@ -9,36 +9,20 @@ import {
   subscriptionExchange,
   cacheExchange,
 } from '@urql/vue'
-import { useAuth } from '../hooks/auth'
 import { devtoolsExchange } from '@urql/devtools'
-
-const { auth } = useAuth()
+import { authExchange } from '@urql/exchange-auth'
+import { getIdToken } from 'firebase/auth'
+import { firebaseUser } from './firebase'
 
 const subscriptionClient = new SubscriptionClient('ws://api/v1/graphql', {
   reconnect: true,
   lazy: true,
-  connectionParams: {
-    headers: {
-      ...(auth.value.token && {
-        Authorization: `Bearer ${auth.value.token}`,
-      }),
-    },
-  },
 })
 
 export const urqlConfig: ClientOptions = {
   url: 'api/v1/graphql',
   requestPolicy: 'cache-and-network',
-  fetchOptions: () => {
-    return {
-      headers: {
-        ...(auth.value.token && {
-          Authorization: `Bearer ${auth.value.token}`,
-        }),
-        'content-type': 'application/json',
-      },
-    }
-  },
+  fetchOptions: { headers: { 'content-type': 'application/json' } },
   exchanges: [
     devtoolsExchange,
     errorExchange({
@@ -49,6 +33,40 @@ export const urqlConfig: ClientOptions = {
     debugExchange,
     dedupExchange,
     cacheExchange,
+    authExchange<string>({
+      addAuthToOperation({ authState, operation }) {
+        // the token isn't in the auth state, return the operation without changes
+        if (!authState) {
+          return operation
+        }
+
+        // fetchOptions can be a function (See Client API) but you can simplify this based on usage
+        const fetchOptions =
+          typeof operation.context.fetchOptions === 'function'
+            ? operation.context.fetchOptions()
+            : operation.context.fetchOptions || {}
+
+        return {
+          ...operation,
+          context: {
+            ...operation.context,
+            fetchOptions: {
+              ...fetchOptions,
+              headers: {
+                ...fetchOptions.headers,
+                Authorization: `Bearer ${authState}`,
+              },
+            },
+          },
+        }
+      },
+      async getAuth({ authState, mutate }) {
+        if (authState) return authState
+
+        if (firebaseUser) return getIdToken(firebaseUser)
+        else return ''
+      },
+    }),
     fetchExchange,
     subscriptionExchange({
       forwardSubscription: operation => subscriptionClient.request(operation),
