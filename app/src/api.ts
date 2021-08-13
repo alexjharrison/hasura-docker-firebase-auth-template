@@ -384,7 +384,7 @@ export const UserUpsertDocument = gql`
     mutation UserUpsert($object: users_insert_input!) {
   insert_users_one(
     object: $object
-    on_conflict: {constraint: users_pkey, update_columns: [email, display_name, image_url]}
+    on_conflict: {constraint: users_pkey, update_columns: email}
   ) {
     ...UserFields
   }

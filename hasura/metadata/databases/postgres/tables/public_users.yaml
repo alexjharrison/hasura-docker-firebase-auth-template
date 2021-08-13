@@ -6,11 +6,12 @@ insert_permissions:
     backend_only: false
     check: {}
     columns:
-    - id
     - created_at
-    - updated_at
-    - email
     - display_name
+    - email
+    - id
+    - image_url
+    - updated_at
   role: public
 - permission:
     backend_only: false
@@ -19,14 +20,16 @@ insert_permissions:
     - display_name
     - email
     - id
+    - image_url
   role: user
 select_permissions:
 - permission:
     columns:
+    - created_at
     - display_name
     - email
     - id
-    - created_at
+    - image_url
     - updated_at
     filter:
       id:
@@ -40,6 +43,7 @@ update_permissions:
     columns:
     - display_name
     - email
+    - image_url
     filter:
       id:
         _eq: X-Hasura-User-Id
