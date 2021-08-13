@@ -9,5 +9,5 @@ import Button from 'primevue/button'
 
 export default (app: App<Element>) => {
   app.use(PrimeVue)
-  app.component('Button', Button)
+  app.component('p-button', Button)
 }

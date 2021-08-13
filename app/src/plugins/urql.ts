@@ -11,8 +11,10 @@ import {
 } from '@urql/vue'
 import { devtoolsExchange } from '@urql/devtools'
 import { authExchange } from '@urql/exchange-auth'
-import { getIdToken } from 'firebase/auth'
-import { firebaseUser } from './firebase'
+import { firebase } from './firebase'
+import { isLoggingIn } from '@/hooks/user'
+
+const { firebaseAuth, signIn } = firebase()
 
 const subscriptionClient = new SubscriptionClient('ws://api/v1/graphql', {
   reconnect: true,
@@ -63,8 +65,17 @@ export const urqlConfig: ClientOptions = {
       async getAuth({ authState, mutate }) {
         if (authState) return authState
 
-        if (firebaseUser) return getIdToken(firebaseUser)
+        const user = firebaseAuth.currentUser
+
+        let token = await user?.getIdToken()
+
+        console.log({ token, user })
+
+        if (user) return user.getIdToken()
         else return ''
+      },
+      didAuthError() {
+        return !isLoggingIn.value
       },
     }),
     fetchExchange,

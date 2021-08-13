@@ -2,6 +2,7 @@ fragment UserFields on users {
   id
   email
   display_name
+  image_url
   created_at
   updated_at
 }

@@ -6,6 +6,7 @@
       Ngrok Console: <a href="http://localhost:4552" target="_blank">Here</a>
     </p>
     <p>Me: {{ user }}</p>
+    <p-button label="Login" />
   </div>
 </template>
 

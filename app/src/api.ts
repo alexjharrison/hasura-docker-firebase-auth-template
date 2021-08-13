@@ -209,6 +209,7 @@ export type Users = {
   display_name: Scalars['String'];
   email: Scalars['String'];
   id: Scalars['String'];
+  image_url?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
 };
 
@@ -243,6 +244,7 @@ export type Users_Bool_Exp = {
   display_name?: Maybe<String_Comparison_Exp>;
   email?: Maybe<String_Comparison_Exp>;
   id?: Maybe<String_Comparison_Exp>;
+  image_url?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -260,6 +262,7 @@ export type Users_Insert_Input = {
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
+  image_url?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -270,6 +273,7 @@ export type Users_Max_Fields = {
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
+  image_url?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -280,6 +284,7 @@ export type Users_Min_Fields = {
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
+  image_url?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -305,6 +310,7 @@ export type Users_Order_By = {
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  image_url?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -324,6 +330,8 @@ export enum Users_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  ImageUrl = 'image_url',
+  /** column name */
   UpdatedAt = 'updated_at'
 }
 
@@ -333,6 +341,7 @@ export type Users_Set_Input = {
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
+  image_url?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -347,23 +356,26 @@ export enum Users_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  ImageUrl = 'image_url',
+  /** column name */
   UpdatedAt = 'updated_at'
 }
 
-export type UserFieldsFragment = { __typename?: 'users', id: string, email: string, display_name: string, created_at: any, updated_at: any };
+export type UserFieldsFragment = { __typename?: 'users', id: string, email: string, display_name: string, image_url?: Maybe<string>, created_at: any, updated_at: any };
 
 export type UserUpsertMutationVariables = Exact<{
   object: Users_Insert_Input;
 }>;
 
 
-export type UserUpsertMutation = { __typename?: 'mutation_root', insert_users_one?: Maybe<{ __typename?: 'users', id: string, email: string, display_name: string, created_at: any, updated_at: any }> };
+export type UserUpsertMutation = { __typename?: 'mutation_root', insert_users_one?: Maybe<{ __typename?: 'users', id: string, email: string, display_name: string, image_url?: Maybe<string>, created_at: any, updated_at: any }> };
 
 export const UserFieldsFragmentDoc = gql`
     fragment UserFields on users {
   id
   email
   display_name
+  image_url
   created_at
   updated_at
 }
@@ -372,7 +384,7 @@ export const UserUpsertDocument = gql`
     mutation UserUpsert($object: users_insert_input!) {
   insert_users_one(
     object: $object
-    on_conflict: {constraint: users_pkey, update_columns: email}
+    on_conflict: {constraint: users_pkey, update_columns: [email, display_name, image_url]}
   ) {
     ...UserFields
   }
