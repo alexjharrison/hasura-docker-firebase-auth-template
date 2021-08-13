@@ -15,7 +15,8 @@ CREATE TABLE public.users (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     email text NOT NULL,
-    display_name text NOT NULL
+    display_name text NOT NULL,
+    image_url text
 );
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_email_key UNIQUE (email);
