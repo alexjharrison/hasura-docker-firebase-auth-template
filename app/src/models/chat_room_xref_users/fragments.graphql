@@ -1,0 +1,5 @@
+fragment ChatRoomXrefUsersFields on chat_room_xref_users {
+  chat_room_id
+  id
+  user_id
+}

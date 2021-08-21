@@ -1,5 +1,8 @@
 <template>
-  <div>Home</div>
+  <div class="text-center">
+    <h1>Fancy Splash Screen</h1>
+    <p>pick a room to the left</p>
+  </div>
 </template>
 
 <script lang="ts">

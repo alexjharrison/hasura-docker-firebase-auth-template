@@ -1,0 +1,5 @@
+mutation AddUserToChatRoom($object: chat_room_xref_users_insert_input!) {
+  insert_chat_room_xref_users_one(object: $object) {
+    ...ChatRoomXrefUsersFields
+  }
+}

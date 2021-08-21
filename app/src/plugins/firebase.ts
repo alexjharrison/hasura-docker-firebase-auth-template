@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { initializeAnalytics } from 'firebase/analytics'
-import { getDatabase, ref, onValue } from 'firebase/database'
+import { getDatabase, onValue } from 'firebase/database'
 import { setUser } from '@/hooks/user'
 import {
   onAuthStateChanged,
@@ -8,6 +8,7 @@ import {
   signInWithPopup,
   getAuth,
 } from 'firebase/auth'
+import { ref } from 'vue'
 
 const firebaseApp = initializeApp({
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
@@ -26,12 +27,15 @@ const firebaseAuth = getAuth(firebaseApp)
 
 const googleAuthProvider = new GoogleAuthProvider()
 
+export let token = ref('')
+
 onAuthStateChanged(firebaseAuth, async user => {
   console.log('AUTH STATE CHANGED', { user })
   setUser(user)
 
   if (user) {
     const idTokenResult = await user.getIdTokenResult()
+    token.value = idTokenResult.token
     const hasuraClaim = idTokenResult.claims['https://hasura.io/jwt/claims']
     if (!hasuraClaim) {
       const metadataRef = ref(

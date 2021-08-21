@@ -1,0 +1,11 @@
+mutation CreateChatMessage($object: chat_message_insert_input!) {
+  insert_chat_message_one(object: $object) {
+    ...ChatMessageFields
+  }
+}
+
+subscription MessagesByRoom($where: chat_message_bool_exp) {
+  chat_message(where: $where) {
+    ...ChatMessageFields
+  }
+}

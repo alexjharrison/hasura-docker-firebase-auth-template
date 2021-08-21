@@ -11,18 +11,30 @@ import {
 } from '@urql/vue'
 import { devtoolsExchange } from '@urql/devtools'
 import { authExchange } from '@urql/exchange-auth'
-import { useFirebase } from './firebase'
+import { useFirebase, token } from './firebase'
 import { isLoggingIn } from '@/hooks/user'
+import { watch } from 'vue'
 
-const { firebaseAuth, signIn } = useFirebase()
+const { firebaseAuth } = useFirebase()
 
-const subscriptionClient = new SubscriptionClient('ws://api/v1/graphql', {
-  reconnect: true,
-  lazy: true,
-})
+const subscriptionClient = new SubscriptionClient(
+  `ws://localhost:${import.meta.env.VITE_HASURA_PORT}/v1/graphql`,
+  {
+    reconnect: true,
+    lazy: true,
+    connectionParams: () => {
+      return {
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${firebaseAuth?.currentUser?.accessToken}`,
+        },
+      }
+    },
+  }
+)
 
 export const urqlConfig: ClientOptions = {
-  url: 'api/v1/graphql',
+  url: '/api/v1/graphql',
   requestPolicy: 'cache-and-network',
   fetchOptions: { headers: { 'content-type': 'application/json' } },
   exchanges: [
@@ -67,8 +79,10 @@ export const urqlConfig: ClientOptions = {
 
         const user = firebaseAuth.currentUser
 
-        if (user) return user.getIdToken()
-        else return ''
+        if (user) {
+          token.value = await user.getIdToken()
+          return token.value
+        } else return ''
       },
       didAuthError() {
         // retry if firebase has not finished logging in

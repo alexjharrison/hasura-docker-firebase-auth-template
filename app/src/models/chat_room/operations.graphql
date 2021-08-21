@@ -1,0 +1,29 @@
+mutation CreateChatRoom($object: chat_room_insert_input!) {
+  insert_chat_room_one(object: $object) {
+    ...ChatRoomFields
+  }
+}
+
+subscription ChatRoomsWithUsers {
+  chat_room {
+    ...ChatRoomFields
+    chat_room_xref_users {
+      id
+      user {
+        ...UserFields
+      }
+    }
+  }
+}
+
+subscription ChatRoomDetails($where: chat_room_bool_exp) {
+  chat_room(where: $where) {
+    ...ChatRoomFields
+    chat_messages(order_by: { created_at: desc }) {
+      ...ChatMessageFields
+      user {
+        ...UserFields
+      }
+    }
+  }
+}

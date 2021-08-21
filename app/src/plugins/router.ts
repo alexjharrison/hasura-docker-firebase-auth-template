@@ -7,9 +7,14 @@ const routes = [
     component: () => import('@/views/Home.vue'),
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/Login.vue'),
+    path: '/room/:id',
+    name: 'Room',
+    component: () => import('@/views/Room.vue'),
+  },
+  {
+    path: '/add-room',
+    name: 'AddRoom',
+    component: () => import('@/views/AddRoom.vue'),
   },
 ]
 const router = createRouter({

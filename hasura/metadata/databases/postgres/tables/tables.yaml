@@ -1,1 +1,4 @@
+- "!include public_chat_message.yaml"
+- "!include public_chat_room.yaml"
+- "!include public_chat_room_xref_users.yaml"
 - "!include public_users.yaml"

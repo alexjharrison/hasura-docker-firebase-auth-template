@@ -1,0 +1,4 @@
+fragment ChatRoomFields on chat_room {
+  id
+  name
+}

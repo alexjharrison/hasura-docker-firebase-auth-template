@@ -1,0 +1,61 @@
+table:
+  name: chat_room
+  schema: public
+array_relationships:
+- name: chat_messages
+  using:
+    foreign_key_constraint_on:
+      column: chat_room_id
+      table:
+        name: chat_message
+        schema: public
+- name: chat_room_xref_users
+  using:
+    foreign_key_constraint_on:
+      column: chat_room_id
+      table:
+        name: chat_room_xref_users
+        schema: public
+insert_permissions:
+- permission:
+    backend_only: false
+    check: {}
+    columns:
+    - name
+  role: user
+select_permissions:
+- permission:
+    columns:
+    - id
+    - name
+    filter:
+      chat_room_xref_users:
+        _exists:
+          _table:
+            name: chat_room_xref_users
+            schema: public
+          _where:
+            user_id:
+              _eq: X-Hasura-User-Id
+  role: user
+update_permissions:
+- permission:
+    check:
+      _exists:
+        _table:
+          name: chat_room_xref_users
+          schema: public
+        _where:
+          user_id:
+            _eq: X-Hasura-User-Id
+    columns:
+    - name
+    filter:
+      _exists:
+        _table:
+          name: chat_room_xref_users
+          schema: public
+        _where:
+          user_id:
+            _eq: X-Hasura-User-Id
+  role: user

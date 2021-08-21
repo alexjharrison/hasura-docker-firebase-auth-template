@@ -4,6 +4,10 @@ body {
   color: var(--text-color);
 }
 
+a {
+  text-decoration: none;
+}
+
 // @import 'primeflex/src/_variables.scss';
 // @import 'primeflex/src/_grid.scss';
 // @import 'primeflex/src/_formlayout.scss';

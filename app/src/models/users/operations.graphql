@@ -6,3 +6,9 @@ mutation UserUpsert($object: users_insert_input!) {
     ...UserFields
   }
 }
+
+subscription Users($where: users_bool_exp) {
+  users(where: $where) {
+    ...UserFields
+  }
+}

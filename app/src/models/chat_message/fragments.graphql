@@ -1,0 +1,7 @@
+fragment ChatMessageFields on chat_message {
+  chat_room_id
+  created_at
+  id
+  message
+  user_id
+}

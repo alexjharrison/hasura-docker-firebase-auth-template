@@ -1,0 +1,35 @@
+table:
+  name: chat_room_xref_users
+  schema: public
+object_relationships:
+- name: chat_room
+  using:
+    foreign_key_constraint_on: chat_room_id
+- name: user
+  using:
+    foreign_key_constraint_on: user_id
+insert_permissions:
+- permission:
+    backend_only: false
+    check: {}
+    columns:
+    - id
+    - chat_room_id
+    - user_id
+  role: user
+select_permissions:
+- permission:
+    columns:
+    - user_id
+    - chat_room_id
+    - id
+    filter:
+      chat_room:
+        _exists:
+          _table:
+            name: chat_room_xref_users
+            schema: public
+          _where:
+            user_id:
+              _eq: X-Hasura-User-Id
+  role: user
