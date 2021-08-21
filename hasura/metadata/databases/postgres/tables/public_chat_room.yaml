@@ -30,32 +30,19 @@ select_permissions:
     - name
     filter:
       chat_room_xref_users:
-        _exists:
-          _table:
-            name: chat_room_xref_users
-            schema: public
-          _where:
-            user_id:
-              _eq: X-Hasura-User-Id
+        user_id:
+          _eq: X-Hasura-User-Id
   role: user
 update_permissions:
 - permission:
     check:
-      _exists:
-        _table:
-          name: chat_room_xref_users
-          schema: public
-        _where:
-          user_id:
-            _eq: X-Hasura-User-Id
+      chat_room_xref_users:
+        user_id:
+          _eq: X-Hasura-User-Id
     columns:
     - name
     filter:
-      _exists:
-        _table:
-          name: chat_room_xref_users
-          schema: public
-        _where:
-          user_id:
-            _eq: X-Hasura-User-Id
+      chat_room_xref_users:
+        user_id:
+          _eq: X-Hasura-User-Id
   role: user

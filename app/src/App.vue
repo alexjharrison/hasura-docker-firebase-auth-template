@@ -6,7 +6,13 @@
     <i class="pi pi-spin pi-spinner" style="font-size: 5rem"></i>
   </div>
   <div v-else-if="!user?.id">
-    <p-button label="Log In" @click="signIn" />
+    <div class="flex justify-content-center">
+      <p-button
+        icon="pi pi-google"
+        label="Log In With Google"
+        @click="signIn"
+      />
+    </div>
   </div>
   <div v-else>
     <div class="grid">
@@ -31,3 +37,5 @@
     },
   })
 </script>
+
+<style lang="scss"></style>

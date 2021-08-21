@@ -1,34 +1,32 @@
 <template>
   <div>
-    <Card class="px-3 pt-3 bg-blue-500 border-blue-400 border-3">
-      <template #header> Hello {{ user?.display_name }} </template>
-      <template #content>
-        <p-button label="Log Out" @click="signOut" />
-      </template>
-    </Card>
+    <div class="px-2 pt-1 pb-3 p-card">
+      <p class="mb-2 text-xl">Hello {{ user?.display_name }}</p>
+      <div class="flex align-items-center">
+        <avatar
+          v-if="user?.image_url"
+          :image="user?.image_url"
+          size="large"
+          shape="circle"
+          class="mr-4"
+        />
+        <p-button label="Log Out" @click="signOut" class="p-button-sm" />
+      </div>
+    </div>
+    <router-link :to="{ name: 'AddRoom' }">
+      <p-button
+        label="Create New Room"
+        class="mt-3 p-button-sm p-button-help p-button-rounded"
+      />
+    </router-link>
+    <hr />
     <section>
       <h2>My Rooms</h2>
-      <router-link :to="{ name: 'AddRoom' }">
-        <p-button label="Create New Room" class="p-button-sm p-button-help" />
-      </router-link>
-      <hr />
-      <div v-for="room in rooms?.chat_room" :key="room.id">
-        <div class="my-4">
-          <router-link :to="{ name: 'Room', params: { id: room.id } }">
-            <p-button class="p-button-sm p-button-info">
-              <span class="font-semibold">Room: {{ room.name }}</span>
-            </p-button>
-          </router-link>
-        </div>
-        <chip
-          v-for="member in room.chat_room_xref_users"
-          :key="member.id"
-          :label="member.user.id === user?.id ? 'Me' : member.user.display_name"
-          :image="member.user.image_url || undefined"
-          class="mb-2"
-        />
-        <hr />
-      </div>
+      <sidebar-rooms
+        v-for="room in rooms?.chat_room"
+        :key="room.id"
+        :room="room"
+      />
     </section>
   </div>
 </template>
@@ -40,9 +38,11 @@
   import Card from 'primevue/card'
   import { useChatRoomsWithUsersSubscription } from '@/api'
   import Chip from 'primevue/chip'
+  import Avatar from 'primevue/avatar'
+  import SidebarRooms from '@/components/SidebarRooms.vue'
 
   export default defineComponent({
-    components: { Card, Chip },
+    components: { Card, Chip, SidebarRooms, Avatar },
     setup() {
       const { signOut } = useFirebase()
 
@@ -52,3 +52,9 @@
     },
   })
 </script>
+
+<style lang="scss" scoped>
+  .p-card {
+    background-color: var(--surface-c);
+  }
+</style>

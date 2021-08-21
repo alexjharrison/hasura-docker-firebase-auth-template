@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { initializeAnalytics } from 'firebase/analytics'
 import { getDatabase, onValue } from 'firebase/database'
-import { setUser } from '@/hooks/user'
+import { isLoggingIn, setUser } from '@/hooks/user'
 import {
   onAuthStateChanged,
   GoogleAuthProvider,
@@ -52,7 +52,10 @@ onAuthStateChanged(firebaseAuth, async user => {
 })
 
 export const useFirebase = () => {
-  const signIn = () => signInWithPopup(firebaseAuth, googleAuthProvider)
+  const signIn = () => {
+    isLoggingIn.value = true
+    signInWithPopup(firebaseAuth, googleAuthProvider)
+  }
   const signOut = () => firebaseAuth.signOut()
 
   return {

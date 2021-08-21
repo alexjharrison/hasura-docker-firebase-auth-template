@@ -15,6 +15,7 @@ export const isLoggingIn = ref(true)
 export function setUser(newUser: User | null) {
   isLoggingIn.value = false
   appUser.value = null
+  console.log({ newUser })
 
   if (newUser)
     client
@@ -31,6 +32,14 @@ export function setUser(newUser: User | null) {
       )
       .toPromise()
       .then(({ data }) => {
-        appUser.value = data?.insert_users_one || null
+        appUser.value = data?.insert_users_one || {
+          created_at: Date.now(),
+          email: newUser.email,
+          id: newUser.uid,
+          display_name: newUser.displayName,
+          updated_at: Date.now(),
+          image_url: newUser.photoURL,
+          __typename: 'users',
+        }
       })
 }
